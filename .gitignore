@@ -2,6 +2,21 @@
 node_modules
 /dist
 
+backend/HELP.md
+backend/target/
+backend/!.mvn/wrapper/maven-wrapper.jar
+backend/!**/src/main/**/target/
+backend/!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+backend/.idea
+backend/*.iws
+backend/*.iml
+backend/*.ipr
+
+### VS Code ###
+.vscode/
+
 
 # local env files
 .env.local
@@ -21,3 +36,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+/backend/.mvn
