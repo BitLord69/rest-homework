@@ -1,15 +1,24 @@
 <template>
-  <About msg="This is my about page..." />
+  <About msg="This is my about page!" />
 </template>
 
 <script>
+import About from "@/components/About.vue";
+
 export default {
   name: "App",
-  components: {},
+  components: {
+    About,
+  },
 };
 </script>
 
-<style>
+<style lang="scss">
+body {
+  box-sizing: border-box;
+  background-color: burlywood;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
