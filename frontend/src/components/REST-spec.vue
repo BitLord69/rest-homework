@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div>
+    <h1 class="p-my-2">{{ msg }}</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: "About",
+  name: "REST-spec",
   props: {
     msg: String,
   },
@@ -14,9 +14,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h3 {
-  margin: 20px 0 0;
-}
 ul {
   list-style-type: none;
   padding: 0;
