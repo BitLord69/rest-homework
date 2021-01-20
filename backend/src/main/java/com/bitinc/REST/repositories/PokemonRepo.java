@@ -1,6 +1,6 @@
-package com.example.demo.repositories;
+package com.bitinc.REST.repositories;
 
-import com.example.demo.entities.Pokemon;
+import com.bitinc.REST.entities.Pokemon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
-package com.example.demo.services;
+package com.bitinc.REST.services;
 
-import com.example.demo.entities.Pokemon;
-import com.example.demo.models.PokeResultItem;
-import com.example.demo.repositories.PokemonRepo;
+import com.bitinc.REST.entities.Pokemon;
+import com.bitinc.REST.models.PokeResultItem;
+import com.bitinc.REST.repositories.PokemonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

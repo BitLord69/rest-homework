@@ -1,9 +1,9 @@
-package com.example.demo.controllers;
+package com.bitinc.REST.controllers;
 
 
-import com.example.demo.entities.Pokemon;
-import com.example.demo.models.PokeResultItem;
-import com.example.demo.services.PokemonService;
+import com.bitinc.REST.entities.Pokemon;
+import com.bitinc.REST.models.PokeResultItem;
+import com.bitinc.REST.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

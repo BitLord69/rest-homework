@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.bitinc.REST.models;
 
 import lombok.Data;
 

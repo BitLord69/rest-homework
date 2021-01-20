@@ -1,10 +1,10 @@
-package com.example.demo;
+package com.bitinc.REST;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class InitalizrApplicationTests {
+class ServerTests {
 
 	@Test
 	void contextLoads() {

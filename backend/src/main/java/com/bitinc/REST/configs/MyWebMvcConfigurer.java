@@ -1,4 +1,4 @@
-package com.example.demo.configs;
+package com.bitinc.REST.configs;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
