@@ -3,17 +3,14 @@ package com.bitinc.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import javax.persistence.*;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
 
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="Pokemons")
-public class Pokemon {
+@Node("Pokemon")
+public class PokemonEntity {
   @Id
   private long id;
   private String name;
@@ -22,4 +19,11 @@ public class Pokemon {
   private String imageUrl;
   private int height;
   private int weight;
+
+/*
+  @Relationship(type = "ACTED_IN", direction = INCOMING)
+  private Set<PersonEntity> actors = new HashSet<>();
+  @Relationship(type = "DIRECTED", direction = INCOMING)
+  private Set<PersonEntity> directors = new HashSet<>();
+*/
 }

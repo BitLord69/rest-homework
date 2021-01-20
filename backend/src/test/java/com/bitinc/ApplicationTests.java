@@ -1,10 +1,10 @@
-package com.bitinc.REST;
+package com.bitinc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -2,6 +2,9 @@
   <div>
     <h1 class="p-my-2">{{ msg }}</h1>
   </div>
+  <div>
+    fdfdsfds
+  </div>
 </template>
 
 <script>
