@@ -1,12 +1,11 @@
 package com.bitinc.controllers;
 
-import com.bitinc.entities.PokemonEntity;
+import com.bitinc.models.PokeResults;
 import com.bitinc.services.PokeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bitinc.entities.PokemonEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/rest/v1/pokemon")
@@ -24,12 +23,20 @@ public class PokeController {
   }
 
   @GetMapping(value = { "", "/" }, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  List<PokemonEntity> getPokemons() {
-    return pokeService.findAll();
+  PokeResults getPokemonsList() {
+//  PokeResults getPokemonsList(@RequestParam(value="offset", required=false) Integer page, @RequestParam(value="limit", required=false) Integer size) {
+    return pokeService.getPokemonsList();
   }
 
   @PutMapping
   PokemonEntity createOrUpdatePokemon(@RequestBody PokemonEntity newPokemon) {
     return pokeService.save(newPokemon);
   }
+
+//  @PostMapping
+//  PokemonEntity addPost(@RequestBody PokemonEntity newPokemon) {
+//    return pokeService.save(newPokemon);
+//  }
+
+  /* Gör DELETE också! */
 }
