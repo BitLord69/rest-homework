@@ -1,4 +1,4 @@
-package com.bitinc.models;
+package com.bitinc.rest.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

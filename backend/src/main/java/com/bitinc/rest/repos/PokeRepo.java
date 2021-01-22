@@ -1,6 +1,6 @@
-package com.bitinc.repos;
+package com.bitinc.rest.repos;
 
-import com.bitinc.entities.PokemonEntity;
+import com.bitinc.rest.entities.PokemonEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

@@ -1,4 +1,4 @@
-package com.bitinc.services;
+package com.bitinc.rest.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.bitinc.models.PokeResults;
-import com.bitinc.repos.PokeRepo;
-import org.springframework.data.domain.Pageable;
-import com.bitinc.models.PokeResultItem;
-import com.bitinc.entities.PokemonEntity;
+import com.bitinc.rest.models.PokeResults;
+import com.bitinc.rest.repos.PokeRepo;
+import com.bitinc.rest.entities.PokemonEntity;
+import com.bitinc.rest.models.PokeResultItem;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,15 @@ public class PokeService {
   @Autowired
   private PokeRepo pokeRepo;
 
-  public PokemonEntity save(PokemonEntity newPokemon) {
-    return pokeRepo.save(newPokemon);
+  public ResponseEntity<PokemonEntity> save(PokemonEntity newPokemon) {
+    return new ResponseEntity<>(pokeRepo.save(newPokemon), HttpStatus.OK);
   }
 
-  public PokemonEntity getPokemonById(long id) {
+  public ResponseEntity<PokemonEntity> getPokemonById(long id) {
     Optional<PokemonEntity> optional = pokeRepo.findById(id);
     if (optional.isPresent()) {
       System.out.println("Hittade Pokemon med id " + id + " i Neo, returnerar....");
-      return optional.get();
+      return new ResponseEntity<>(optional.get(), HttpStatus.OK);
     }
 
     System.out.println("Hittade *inte* Pokemon med id " + id + " i Neo, söker online!");
@@ -72,10 +73,10 @@ public class PokeService {
     );
 
     pokeRepo.save(pokemon);
-    return pokemon;
+    return new ResponseEntity<>(pokemon, HttpStatus.OK);
   }
 
-  public PokeResults getPokemonsList() {
+  public ResponseEntity<List<PokeResultItem>> getPokemonsList() {
 //  public PokeResults getPokemonsList(Pageable pageable) {
     int limit = 100;
     PokeResults results = new PokeResults();
@@ -90,7 +91,7 @@ public class PokeService {
 
     System.out.printf("\nentriesInRemote: %d, entriesInCache: %d\n", entriesInRemote, entriesInCache);
 
-    if (entriesInRemote > 0 &&  entriesInRemote != entriesInCache) {
+    if (entriesInRemote > 0 && entriesInCache < entriesInRemote) {
       Pattern pattern = Pattern.compile("pokemon\\/(\\d+)");
 
       System.out.println("Cache is not up to date, fetching from remote...");
@@ -123,7 +124,7 @@ public class PokeService {
     } else
     {
       List<PokemonEntity> l = pokeRepo.findAll();
-      System.out.printf("Getting results from cache.... l.size: %d", l.size());
+      System.out.printf("Getting results from cache.... l.size: %d\n", l.size());
 
       l.forEach(o -> {
         PokeResultItem pi = new PokeResultItem(o.getName(), REMOTE_URL + "/pokemon/" + o.getId());
@@ -131,8 +132,11 @@ public class PokeService {
       });
     }
 
-    PokeResults pr = new PokeResults();
-    pr.setResults(resultList);
-    return pr;
+//    PokeResults pr = new PokeResults();
+//    pr.setResults(resultList);
+//    return new ResponseEntity<>(pr, HttpStatus.OK);
+    System.out.println(resultList);
+    System.out.println(resultList.stream().collect(Collectors.toList()));
+    return new ResponseEntity<>(resultList, HttpStatus.OK);
   }
 }

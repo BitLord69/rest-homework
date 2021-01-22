@@ -1,4 +1,4 @@
-package com.bitinc;
+package com.bitinc.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
