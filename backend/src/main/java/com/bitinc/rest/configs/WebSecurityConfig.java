@@ -1,27 +1,36 @@
 package com.bitinc.rest.configs;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Bean;
+import com.bitinc.rest.security.jwt.AuthTokenFilter;
+import com.bitinc.rest.security.jwt.AuthEntryPointJwt;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.bitinc.rest.security.services.UserDetailsServiceImpl;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 @Configuration
+//@EnableWebSecurity
 @EnableWebSecurity(debug=true)
 @EnableGlobalMethodSecurity(
-    // securedEnabled = true,
-    // jsr250Enabled = true,
-    prePostEnabled = true)
+     securedEnabled = true
+//    jsr250Enabled = true
+//    prePostEnabled = true
+)
+@ComponentScan("com.bitinc.rest.configs")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
-  private PokeUserDetailsService userDetailsService;
+  private UserDetailsServiceImpl userDetailsService;
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
@@ -41,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests()
         .antMatchers("/api/auth/**").permitAll()
+        .antMatchers("/api/test/**").permitAll()
+//        .antMatchers("/api/test/user/**").hasAuthority("ROLE_ADMIN")
         .antMatchers(HttpMethod.GET, "/rest/v1/pokemon/").permitAll()
         .antMatchers(HttpMethod.GET, "/rest/v1/pokemon/*").authenticated()
         .antMatchers(HttpMethod.GET,"/rest/v1/user/").permitAll()
@@ -51,12 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(AuthenticationManagerBuilder auth) throws Exception {
-    System.out.println("In SecurityConfig.configure(AuthenticationManagerBuilder)");
-
-//    auth.authenticationProvider(authenticationProvider());
     auth
-//        .userDetailsService(userDetailsService())
-//        .passwordEncoder(passwordEncoder());
         .userDetailsService(userDetailsService)
         .passwordEncoder(userDetailsService.getEncoder());
   }
@@ -66,26 +72,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
-
-
-//  @Bean
-//  @Override
-//  protected UserDetailsService userDetailsService() {
-//    return new PokeUserDetailsService();
-//  }
-//
-//  @Bean
-//  protected BCryptPasswordEncoder passwordEncoder() {
-//    return new BCryptPasswordEncoder();
-//  }
-
-//  @Bean
-//  public DaoAuthenticationProvider authenticationProvider(){
-//    System.out.println("In authenticationProvider");
-//
-//    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//    provider.setPasswordEncoder(myUserDetailsService.getEncoder());
-//    provider.setUserDetailsService(myUserDetailsService);
-//    return provider;
-//  }
 }

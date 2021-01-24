@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PokeService  {
   protected final static String REMOTE_URL = "https://pokeapi.co/api/v2/";
-
   protected final RestTemplate restTemplate = new RestTemplate();
 
   public List<PokeResultItem> results;
@@ -135,7 +134,6 @@ public class PokeService  {
 
     PokeResults pr = new PokeResults();
     pr.setResults(resultList);
-    return new ResponseEntity<>(pr, HttpStatus.OK);
-//    return new ResponseEntity<>(resultList, HttpStatus.OK);
+    return ResponseEntity.ok(pr);
   }
 }

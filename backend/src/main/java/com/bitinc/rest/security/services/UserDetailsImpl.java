@@ -3,18 +3,18 @@ package com.bitinc.rest.security.services;
 import com.bitinc.rest.repos.UserRepo;
 import com.bitinc.rest.entities.PokeUserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.bitinc.rest.configs.PokeUserDetailsService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class UserDetailsImpl extends BaseService {
+public class UserDetailsImpl extends BaseDetailsImpl {
   private static final long serialVersionUID = 1L;
 
   private final String username;
@@ -27,7 +27,7 @@ public class UserDetailsImpl extends BaseService {
   private UserRepo userRepo;
 
   @Autowired
-  private PokeUserDetailsService myUserDetailsService;
+  private UserDetailsServiceImpl userDetailsService;
 
   public UserDetailsImpl(String username, String password,
                          Collection<? extends GrantedAuthority> authorities) {
@@ -40,6 +40,8 @@ public class UserDetailsImpl extends BaseService {
     List<GrantedAuthority> authorities = user.getRoles().stream()
         .map(role -> new SimpleGrantedAuthority(role.getName().name()))
         .collect(Collectors.toList());
+
+    System.out.println(" static UserDetailsImpl build!! authorities: " + authorities);
 
     return new UserDetailsImpl(
         user.getUsername(),
@@ -82,16 +84,14 @@ public class UserDetailsImpl extends BaseService {
     return true;
   }
 
-
-  public PokeUserEntity findCurrentUser() {
-    // the login session is stored between page reloads,
-    // and we can access the current authenticated user with this
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+  public PokeUserEntity getCurrentUser() {
+    UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String username = userDetails.getUsername();
     return userRepo.findById(username).get();
   }
 
   public PokeUserEntity registerUser(PokeUserEntity user) {
-    return myUserDetailsService.addUser(user.getUsername(), user.getPassword());
+    return userDetailsService.addUser(user.getUsername(), user.getPassword(), user.getRoles());
   }
 
   @Override

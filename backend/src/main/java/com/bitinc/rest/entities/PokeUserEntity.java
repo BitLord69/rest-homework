@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.security.core.Authentication;
 
-import java.util.List;
+import java.security.Principal;
+import java.util.HashSet;
 
 @Data
 @NoArgsConstructor
@@ -22,5 +24,20 @@ public class PokeUserEntity {
   String password;
 
   @Relationship(type = "HAS_ROLE", direction = Relationship.Direction.OUTGOING)
-  private List<PokeRolesEntity> roles;
+  private HashSet<PokeRolesEntity> roles;
+
+  public static boolean isUser(Principal principal){
+    org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) ((Authentication) principal).getPrincipal();
+    return u.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"));
+  }
+
+  public static boolean isModerator(Principal principal){
+    org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) ((Authentication) principal).getPrincipal();
+    return u.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_MODERATOR"));
+  }
+
+  public static boolean isAdmin(Principal principal){
+    org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) ((Authentication) principal).getPrincipal();
+    return u.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+  }
 }
