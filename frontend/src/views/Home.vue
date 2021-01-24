@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import RESTSpec from "@/components/REST-spec.vue";
 
 export default {

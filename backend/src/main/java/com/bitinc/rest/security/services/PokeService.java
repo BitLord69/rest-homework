@@ -1,4 +1,4 @@
-package com.bitinc.rest.services;
+package com.bitinc.rest.security.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +15,16 @@ import com.bitinc.rest.models.PokeResultItem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 
 @Service
-public class PokeService {
-  private final static String REMOTE_URL = "https://pokeapi.co/api/v2/";
+public class PokeService  {
+  protected final static String REMOTE_URL = "https://pokeapi.co/api/v2/";
+
+  protected final RestTemplate restTemplate = new RestTemplate();
 
   public List<PokeResultItem> results;
-  private final RestTemplate restTemplate = new RestTemplate();
 
   @Autowired
   private PokeRepo pokeRepo;
@@ -76,7 +77,7 @@ public class PokeService {
     return new ResponseEntity<>(pokemon, HttpStatus.OK);
   }
 
-  public ResponseEntity<List<PokeResultItem>> getPokemonsList() {
+  public ResponseEntity<PokeResults> getPokemonsList() {
 //  public PokeResults getPokemonsList(Pageable pageable) {
     int limit = 100;
     PokeResults results = new PokeResults();
@@ -132,11 +133,9 @@ public class PokeService {
       });
     }
 
-//    PokeResults pr = new PokeResults();
-//    pr.setResults(resultList);
-//    return new ResponseEntity<>(pr, HttpStatus.OK);
-    System.out.println(resultList);
-    System.out.println(resultList.stream().collect(Collectors.toList()));
-    return new ResponseEntity<>(resultList, HttpStatus.OK);
+    PokeResults pr = new PokeResults();
+    pr.setResults(resultList);
+    return new ResponseEntity<>(pr, HttpStatus.OK);
+//    return new ResponseEntity<>(resultList, HttpStatus.OK);
   }
 }

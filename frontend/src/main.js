@@ -7,6 +7,8 @@ import PrimeVue from 'primevue/config';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
+import Password from 'primevue/password';
+import InputText from 'primevue/inputtext';
 import ScrollPanel from 'primevue/scrollpanel';
 import ProgressSpinner from 'primevue/progressspinner';
 
@@ -22,6 +24,8 @@ const app = createApp(App).
 app.component("Card", Card);     
 app.component("Button", Button);     
 app.component("Divider", Divider);     
+app.component("Password", Password);     
+app.component("InputText", InputText);
 app.component("ScrollPanel", ScrollPanel);
 app.component('ProgressSpinner', ProgressSpinner);
 

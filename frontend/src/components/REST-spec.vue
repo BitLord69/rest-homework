@@ -20,6 +20,10 @@
                 <span class="p-text-bold">{{ r.name }}</span>: {{ r.type }}
               </div>
             </div>
+            <div>
+              <h4 class="p-my-1">Access:</h4> 
+              {{ spec.access }}
+            </div>
           </div>
           <div class="p-col-8 top">
             <ExampleLoader :url='"http://localhost:5001/" + spec.exampleURL'/>

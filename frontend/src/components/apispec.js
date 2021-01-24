@@ -1,7 +1,7 @@
 export default {
   data: [
     {
-      route: '/',
+      route: 'rest/v1/pokemon/',
       method: 'GET',
       description: 'Get a list of all Pokemons',
       returns: 
@@ -15,10 +15,11 @@ export default {
             name: 'url'
            }
         ],
-      exampleURL: 'rest/v1/pokemon/'
+      exampleURL: 'rest/v1/pokemon/',
+      access: 'public',
     }, 
     {
-      route: '/:id',
+      route: 'rest/v1/pokemon/:id',
       method: 'GET',
       description: 'Get a unique Pokemon, using an id (integer)',
       returns: 
@@ -36,7 +37,8 @@ export default {
             name: 'more stuff...'
           }
         ],
-      exampleURL: 'rest/v1/pokemon/1'
+      exampleURL: 'rest/v1/pokemon/1',
+      access: 'loggedin',
     }, 
   ]
 }
