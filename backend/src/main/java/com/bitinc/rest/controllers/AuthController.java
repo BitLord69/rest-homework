@@ -10,23 +10,23 @@ import javax.validation.Valid;
 import com.bitinc.rest.repos.UserRepo;
 import com.bitinc.rest.entities.ERoles;
 import com.bitinc.rest.repos.RolesRepo;
-import com.bitinc.rest.entities.PokeRolesEntity;
+import com.bitinc.rest.security.jwt.JwtUtils;
+import org.springframework.http.ResponseEntity;
 import com.bitinc.rest.entities.PokeUserEntity;
+import com.bitinc.rest.entities.PokeRolesEntity;
+import org.springframework.web.bind.annotation.*;
+import com.bitinc.rest.payload.response.JwtResponse;
 import com.bitinc.rest.payload.request.LoginRequest;
 import com.bitinc.rest.payload.request.SignupRequest;
-import com.bitinc.rest.payload.response.JwtResponse;
 import com.bitinc.rest.payload.response.MessageResponse;
-import com.bitinc.rest.security.jwt.JwtUtils;
-import com.bitinc.rest.security.services.UserDetailsImpl;
-import com.bitinc.rest.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import com.bitinc.rest.security.services.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.bitinc.rest.security.services.UserDetailsServiceImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

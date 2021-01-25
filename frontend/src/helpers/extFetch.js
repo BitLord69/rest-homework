@@ -1,24 +1,32 @@
-export async function extFetch(url, method, body) {
+import authHeader from './auth-header';
+
+export async function extFetch(url, method, body, getFromProtectedPart = false) {
   if (url.startsWith('http://localhost/%27')) {
     console.warn("Do not fetch http://localhost:5001/rest/etc, just write: '/rest/etc'")
   }
-  const result = await fetch(url, {
-    method,
-    body: body ? JSON.stringify(body) : undefined,
-    headers: { 'content-type': 'application/json' },
-  })
 
-console.log("url:", url);
-
-  if (url.includes("login")) {
-  console.log("In extFetch, trying to login..., result.ok:", result.ok, ", status:", result.status);
-    let a = await result.json();
-    console.log("In extFetch, after trying to log in, a:", a);
-    return a;
+  let headers = { 'content-type': 'application/json' };
+  if (getFromProtectedPart) {
+    let h2 = authHeader();
+    headers = { ...headers, ...h2 };
   }
 
-  if (result.ok) {
-    return result.json()
-  }
+  try {
+    let result = await fetch(url, {
+      method,
+      body: body ? JSON.stringify(body) : undefined,
+      headers: headers,
+    });
+
+    if (result.ok) {
+      if (result.headers.get('Content-Type') === 'text/plain;charset=UTF-8') {
+        return result.text();
+      }
+      return result.json()
+    }
     return false
+  } catch (e) {
+    console.log("extFetch catch....")
+    return false;
+  }
 }

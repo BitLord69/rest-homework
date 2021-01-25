@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import About from '@/views/About.vue'
 import Login from '@/views/Login.vue'
+import Logout from '@/views/LO2.vue'
 import Register from '@/views/Register.vue'
 
 const routes = [
@@ -21,10 +22,15 @@ const routes = [
     component: Login
   },
   {
+    path: '/logmeout',
+    name: 'Logout',
+    component: Logout
+  },
+  {
     path: '/register',
     name: 'Register',
     component: Register
-  }
+  },
 ]
 
 const router = createRouter({

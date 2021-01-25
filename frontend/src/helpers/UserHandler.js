@@ -27,53 +27,31 @@ export default function UserHandler() {
   //   }
   // }
 
-  async function logout() {
-    try {
-      await extFetch("/logout/", "GET");
-    } catch (e) {
-      userError.value = e;
-    }
-    currentUser.value = null;
-    isLoggedIn.value = false;
-  }
-
   const login = async (username, password) => {
-    let result;
-    let credentials =`username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-
-    console.log("login, credentials:", credentials);
-    
-     result = await fetch("/login/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: credentials,
-        redirect: "manual",
-      });
-
-      if (result.url.includes("error")) {
-        console.log("Wrong username/password");
-      } else {
-        result = await fetch("/api/whoami");
-        currentUser.value = await result.json();
+    let result = await extFetch('/api/auth/signin/', 'POST', { username, password });
+    if (!result) {
+      isLoggedIn.value = false;
+      currentUser.value = null;
+      loginError.value = "Bad username and/or password!"
+      console.log("Wrong username/password");
+    } else {
+      if (result.accessToken) {
+        console.log("Storing ", result, ' in local storage!!!');
+        localStorage.setItem('user', JSON.stringify(result));
       }
-    
-// console.log("After trying to log in, result:", result);
-
-//       if (result.error) {
-//         loginError.value = result.error;
-//         isLoggedIn.value = false;
-//         return;
-//       }
-
-//       isLoggedIn.value = true;
-//       currentUser.value = result;
-
-  // } catch (e) {
-    //   loginError.value = e;
-    //   isLoggedIn.value = false;
-    //   return;
-    // }
+      loginError.value = null;
+      isLoggedIn.value = true;
+      currentUser.value = result;
+      currentUser.value.highestRole = result.roles[result.roles.length - 1];
+    }
   };
+
+  function logout() {
+    localStorage.removeItem('user');
+    isLoggedIn.value = false;
+    currentUser.value = null;
+    return true;
+  }
 
   async function createUser(form) {
     try {
@@ -87,10 +65,9 @@ export default function UserHandler() {
 
   async function startApp() {
     let result;
-    
+
     try {
-      result = await extFetch("/api/whoami/");    
-      console.log("whoami - result:", result);      
+      result = await extFetch("/api/auth/whoami/", "GET", undefined, true);    
       if (result.error || result == false) {
         isLoggedIn.value = false;
         userError.value = result.error;
@@ -98,6 +75,7 @@ export default function UserHandler() {
       }
       isLoggedIn.value = true;
       currentUser.value = result;
+      currentUser.value.highestRole = result.roles[result.roles.length - 1];
     } catch (e) {
       userError.value = e;
       isLoggedIn.value = false;

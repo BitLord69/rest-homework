@@ -4,8 +4,7 @@
       <Button 
         class="p-button-raised p-button-rounded p-button-raised" 
         label="Try it out!"
-        @click="getData"
-        >
+        @click="getData">
       </Button>
     </div>
     <div v-if="waitingForData" class="p-d-flex p-flex-column p-jc-center">
@@ -13,18 +12,23 @@
       <ProgressSpinner style="width:60px;height:60px" strokeWidth="8" animationDuration=".5s"/>
     </div>
     <div v-else style="border: 1px solid grey;">
-      <div v-if="error">
+      <div v-if="error" class="p-text-center">
         <h4>{{ error }}</h4>
       </div>
       <div v-if="res">
         <ScrollPanel style="height: 160px;">
-          <vue-json-pretty 
-          :data='res'
-          :show-double-quotes=false
-          :show-length=true
-          :show-line=true
-          :collapsed-on-click-brackets=true
-          :custom-value-formatter="customLinkFormatter" />
+          <div v-if="(typeof (res) === 'string')">
+            {{ res }}
+          </div>
+          <div v-else>
+            <vue-json-pretty 
+              :data='res'
+              :show-double-quotes=false
+              :show-length=true
+              :show-line=true
+              :collapsed-on-click-brackets=true
+              :custom-value-formatter="customLinkFormatter" />
+          </div>
         </ScrollPanel>
       </div>
     </div>
@@ -54,10 +58,13 @@ export default {
     async function getData() {
       waitingForData.value = true;
       try {
-        res.value = await extFetch(props.url);
-        console.log(res.value);
+        res.value = await extFetch(props.url, "GET", undefined, true);
+        if (!res.value) {
+          error.value = "Error while fetching data..."
+        }
       } catch (e) {
         error.value = e
+        console.log("error fetching... ", e);
       }
       waitingForData.value = false;
     }

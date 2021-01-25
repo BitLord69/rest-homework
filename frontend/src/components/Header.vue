@@ -2,12 +2,16 @@
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <span v-if="isLoggedIn">Logout</span>
-    <span v-else>
+    <span v-if="isLoggedIn">
+      <router-link to="/logmeout">Logout</router-link>
+    </span>
+    <span v-if="!isLoggedIn">
       <router-link :to="{ name: 'Login'}">Login</router-link> |
       <router-link to="/register">Register</router-link>
     </span>
   </div>
+  <div v-if="currentUser"><strong>Current user: {{ currentUser.username }}</strong> [{{ currentUser.highestRole.name }}]</div>
+  <div v-else><strong>Not logged in</strong></div>
 </template>
 
 <script>
@@ -17,11 +21,11 @@ export default {
   name: "Header",
   
   async setup() {
-    const { isLoggedIn, currentUser, startApp } = UserHandler();
+    const { isLoggedIn, currentUser, startApp, logout } = UserHandler();
 
     await startApp();
 
-    return { isLoggedIn, currentUser }
+    return { logout, isLoggedIn, currentUser }
   }
 }
 </script>
